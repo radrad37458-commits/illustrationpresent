@@ -1,1046 +1,1086 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>あなたへのプレゼント</title>
+  <meta charset="UTF-8">
 
-<style>
-  :root {
-    --bg: #fff7fb;
-    --text: #3d3040;
-    --accent: #e85d91;
-    --accent-dark: #c83d70;
-    --card: rgba(255,255,255,.92);
-  }
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
-  * {
-    box-sizing: border-box;
-  }
+  <title>プレゼントが届きました</title>
 
-  html {
-    min-height: 100%;
-    background: var(--bg);
-  }
+  <style>
+    /* =========================
+       基本設定
+    ========================= */
 
-  body {
-    margin: 0;
-    min-height: 100vh;
-    min-height: 100dvh;
+    * {
+      box-sizing: border-box;
+    }
 
-    font-family:
-      -apple-system,
-      BlinkMacSystemFont,
-      "Hiragino Kaku Gothic ProN",
-      "Yu Gothic",
-      Meiryo,
-      sans-serif;
+    html {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-    color: var(--text);
+    body {
+      width: 100%;
+      min-height: 100%;
+      margin: 0;
 
-    background:
-      radial-gradient(
-        circle at 20% 15%,
-        #ffdbea 0 8%,
-        transparent 28%
-      ),
-      radial-gradient(
-        circle at 85% 85%,
-        #e8ddff 0 7%,
-        transparent 25%
-      ),
-      var(--bg);
+      font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        "Meiryo",
+        sans-serif;
 
-    /* 横スクロールは禁止 */
-    overflow-x: hidden;
-
-    /* 縦スクロールは許可 */
-    overflow-y: auto;
-
-    -webkit-overflow-scrolling: touch;
-  }
-
-
-  /* =========================
-     全体
-  ========================= */
-
-  #app {
-    width: 100%;
-    min-height: 100vh;
-    min-height: 100dvh;
-
-    display: flex;
-
-    align-items: center;
-    justify-content: center;
-
-    padding:
-      max(20px, env(safe-area-inset-top))
-      20px
-      max(20px, env(safe-area-inset-bottom));
-  }
-
-
-  /* =========================
-     各画面
-  ========================= */
-
-  .screen {
-    width: min(92vw, 520px);
-    max-width: 520px;
-
-    text-align: center;
-
-    animation: fadeIn .7s ease both;
-
-    margin: auto;
-  }
-
-  .hidden {
-    display: none !important;
-  }
-
-
-  /* =========================
-     カード
-  ========================= */
-
-  .card {
-    width: 100%;
-
-    background: var(--card);
-
-    backdrop-filter: blur(12px);
-
-    border: 1px solid rgba(255,255,255,.9);
-
-    border-radius: 28px;
-
-    padding:
-      clamp(20px, 5vw, 32px)
-      clamp(16px, 5vw, 26px);
-
-    box-shadow:
-      0 18px 60px rgba(80,45,75,.13);
-  }
-
-
-  /* =========================
-     文字
-  ========================= */
-
-  h1 {
-    font-size: clamp(22px, 6vw, 36px);
-
-    line-height: 1.35;
-
-    margin:
-      0 0 12px;
-
-    letter-spacing: .04em;
-  }
-
-  p {
-    margin:
-      0 0 24px;
-
-    line-height: 1.8;
-
-    font-size:
-      clamp(14px, 3.8vw, 16px);
-  }
-
-
-  /* =========================
-     プレゼント箱
-  ========================= */
-
-  .gift-wrap {
-    width: min(190px, 42vw);
-    height: min(190px, 42vw);
-
-    min-width: 135px;
-    min-height: 135px;
-
-    margin:
-      18px auto 28px;
-
-    position: relative;
-
-    cursor: pointer;
-
-    filter:
-      drop-shadow(
-        0 16px 18px rgba(110,60,90,.18)
-      );
-
-    animation:
-      float 2.5s ease-in-out infinite;
-
-    touch-action: manipulation;
-  }
-
-  .gift-box {
-    position: absolute;
-
-    left: 8%;
-    right: 8%;
-
-    bottom: 4%;
-
-    height: 61%;
-
-    background:
-      linear-gradient(
+      background: linear-gradient(
         135deg,
-        #ff77a8,
-        #e44d83
+        #fff5f7,
+        #f8f4ff
       );
 
-    border-radius:
-      10px
-      10px
-      16px
-      16px;
-  }
+      color: #333;
 
-  .gift-box::before {
-    content: "";
+      /* 横スクロールは禁止 */
+      overflow-x: hidden;
 
-    position: absolute;
+      /*
+        縦方向は必要になったら
+        自然にスクロールできる
+      */
+      overflow-y: auto;
 
-    left: 50%;
-    top: 0;
-
-    width: 16%;
-    height: 100%;
-
-    transform:
-      translateX(-50%);
-
-    background:
-      rgba(255,238,178,.9);
-  }
-
-  .gift-lid {
-    position: absolute;
-
-    left: 3%;
-    right: 3%;
-
-    top: 24%;
-
-    height: 18%;
-
-    background: #f26191;
-
-    border-radius: 9px;
-
-    z-index: 2;
-  }
-
-  .gift-lid::after {
-    content: "";
-
-    position: absolute;
-
-    left: 50%;
-    top: 0;
-
-    width: 16%;
-    height: 100%;
-
-    transform:
-      translateX(-50%);
-
-    background:
-      rgba(255,238,178,.95);
-  }
-
-  .ribbon {
-    position: absolute;
-
-    left: 50%;
-    top: 4%;
-
-    width: 31%;
-    height: 25%;
-
-    transform:
-      translateX(-50%);
-
-    z-index: 3;
-  }
-
-  .ribbon::before,
-  .ribbon::after {
-    content: "";
-
-    position: absolute;
-
-    width: 65%;
-    height: 52%;
-
-    border:
-      8px solid #ffe9a8;
-
-    top: 0;
-  }
-
-  .ribbon::before {
-    right: 50%;
-
-    border-radius:
-      18px
-      4px
-      18px
-      4px;
-
-    transform:
-      rotate(20deg);
-  }
-
-  .ribbon::after {
-    left: 50%;
-
-    border-radius:
-      4px
-      18px
-      4px
-      18px;
-
-    transform:
-      rotate(-20deg);
-  }
-
-
-  /* =========================
-     ボタン
-  ========================= */
-
-  button {
-    border: 0;
-
-    border-radius: 999px;
-
-    padding:
-      14px
-      28px;
-
-    max-width: 100%;
-
-    font: inherit;
-
-    font-weight: 700;
-
-    color: white;
-
-    background:
-      linear-gradient(
-        135deg,
-        var(--accent),
-        var(--accent-dark)
-      );
-
-    box-shadow:
-      0 9px 22px rgba(200,61,112,.25);
-
-    cursor: pointer;
-
-    transition:
-      transform .2s,
-      box-shadow .2s;
-
-    touch-action: manipulation;
-  }
-
-  button:hover {
-    transform:
-      translateY(-2px);
-  }
-
-  button:active {
-    transform:
-      translateY(0);
-  }
-
-  button:disabled {
-    opacity: .65;
-    cursor: default;
-  }
-
-
-  /* =========================
-     開封中
-  ========================= */
-
-  .loading {
-    font-size: 14px;
-
-    opacity: .75;
-
-    margin-top: 10px;
-  }
-
-  .dots::after {
-    content: "";
-
-    animation:
-      dots 1.3s steps(4,end) infinite;
-  }
-
-
-  /* =========================
-     イラスト
-  ========================= */
-
-  #illustration {
-    width: 100%;
-
-    height: auto;
-
-    max-height:
-      min(62vh, 650px);
-
-    object-fit: contain;
-
-    border-radius: 18px;
-
-    display: block;
-
-    background: white;
-
-    margin:
-      0 auto 20px;
-  }
-
-  .message {
-    font-size: 16px;
-
-    margin-bottom: 18px;
-  }
-
-  .small {
-    margin-top: 14px;
-
-    font-size: 12px;
-
-    opacity: .58;
-  }
-
-
-  /* =========================
-     キラキラ
-  ========================= */
-
-  .sparkle {
-    position: fixed;
-
-    pointer-events: none;
-
-    font-size: 22px;
-
-    animation:
-      sparkle 1.3s ease-out forwards;
-
-    z-index: 10;
-  }
-
-
-  /* =========================
-     アニメーション
-  ========================= */
-
-  @keyframes float {
-
-    0%,100% {
-      transform:
-        translateY(0)
-        rotate(-1deg);
+      -webkit-overflow-scrolling: touch;
     }
 
-    50% {
-      transform:
-        translateY(-9px)
-        rotate(1deg);
-    }
-  }
 
-  @keyframes fadeIn {
-
-    from {
-      opacity: 0;
-
-      transform:
-        translateY(10px);
-    }
-
-    to {
-      opacity: 1;
-
-      transform:
-        translateY(0);
-    }
-  }
-
-  @keyframes dots {
-
-    0% {
-      content: "";
-    }
-
-    25% {
-      content: ".";
-    }
-
-    50% {
-      content: "..";
-    }
-
-    75%,100% {
-      content: "...";
-    }
-  }
-
-  @keyframes sparkle {
-
-    from {
-      opacity: 1;
-
-      transform:
-        translate(0,0)
-        scale(.7)
-        rotate(0);
-    }
-
-    to {
-      opacity: 0;
-
-      transform:
-        translate(var(--x),var(--y))
-        scale(1.4)
-        rotate(180deg);
-    }
-  }
-
-  @keyframes openGift {
-
-    0% {
-      transform:
-        translateY(0)
-        rotate(0);
-    }
-
-    45% {
-      transform:
-        translateY(-35px)
-        rotate(-7deg);
-    }
-
-    100% {
-      transform:
-        translateY(-90px)
-        rotate(-15deg);
-
-      opacity: 0;
-    }
-  }
-
-  .opening .gift-lid {
-    animation:
-      openGift .8s ease forwards;
-  }
-
-
-  /* =========================
-     縦の短いスマホ
-  ========================= */
-
-  @media (max-height: 700px) {
+    /* =========================
+       アプリ全体
+    ========================= */
 
     #app {
-      align-items: flex-start;
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
 
-      padding-top: 16px;
-      padding-bottom: 16px;
+      display: flex;
+
+      /*
+        基本は完全中央
+      */
+      align-items: center;
+      justify-content: center;
+
+      /*
+        画面端との余白
+      */
+      padding:
+        max(24px, env(safe-area-inset-top))
+        max(20px, env(safe-area-inset-right))
+        max(24px, env(safe-area-inset-bottom))
+        max(20px, env(safe-area-inset-left));
+
+      /*
+        コンテンツが画面より高くなった場合も
+        上下が切れないようにする
+      */
+      min-height: 100dvh;
     }
 
-    .card {
-      padding-top: 18px;
-      padding-bottom: 18px;
-    }
 
-    .gift-wrap {
-      margin-top: 10px;
-      margin-bottom: 18px;
-    }
-
-    p {
-      margin-bottom: 16px;
-    }
-
-    #illustration {
-      max-height: 55vh;
-    }
-  }
-
-
-  /* =========================
-     かなり小さいスマホ
-  ========================= */
-
-  @media (max-width: 360px) {
-
-    #app {
-      padding-left: 12px;
-      padding-right: 12px;
-    }
+    /* =========================
+       各画面
+    ========================= */
 
     .screen {
       width: 100%;
+      max-width: 520px;
+
+      margin: auto;
+
+      text-align: center;
+
+      animation: fadeIn 0.5s ease;
     }
+
+
+    /* =========================
+       カード
+    ========================= */
 
     .card {
-      border-radius: 22px;
+      width: 100%;
+
+      padding: clamp(28px, 6vw, 50px)
+               clamp(20px, 6vw, 40px);
+
+      background: rgba(255, 255, 255, 0.92);
+
+      border-radius: 28px;
+
+      box-shadow:
+        0 15px 50px rgba(0, 0, 0, 0.12);
+
+      backdrop-filter: blur(10px);
     }
+
+
+    /* =========================
+       タイトル
+    ========================= */
 
     h1 {
-      font-size: 21px;
+      margin: 0 0 12px;
+
+      font-size: clamp(24px, 6vw, 34px);
+
+      line-height: 1.4;
+
+      color: #444;
     }
 
-    .gift-wrap {
-      min-width: 120px;
-      min-height: 120px;
+    .message {
+      margin: 0 0 28px;
+
+      font-size: clamp(14px, 4vw, 18px);
+
+      line-height: 1.7;
+
+      color: #666;
     }
 
-    button {
-      padding:
-        13px
-        22px;
+
+    /* =========================
+       プレゼント箱
+    ========================= */
+
+    .gift-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      margin: 10px auto 30px;
+
+      /*
+        画面幅に合わせてサイズ調整
+      */
+      width: min(240px, 60vw);
+      height: min(240px, 60vw);
     }
-  }
 
+    .gift {
+      position: relative;
 
-  /* =========================
-     動きを減らす設定
-  ========================= */
+      width: min(180px, 48vw);
+      height: min(150px, 40vw);
 
-  @media (prefers-reduced-motion: reduce) {
+      cursor: pointer;
 
-    *,
-    *::before,
-    *::after {
-      animation-duration: .01ms !important;
-
-      animation-iteration-count: 1 !important;
-
-      scroll-behavior: auto !important;
+      transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
     }
-  }
-</style>
+
+    .gift:hover {
+      transform: scale(1.06);
+      filter: brightness(1.03);
+    }
+
+    .gift:active {
+      transform: scale(0.96);
+    }
+
+
+    /* 箱 */
+
+    .gift-box {
+      position: absolute;
+
+      left: 10%;
+      bottom: 0;
+
+      width: 80%;
+      height: 65%;
+
+      background: linear-gradient(
+        135deg,
+        #ff8fa3,
+        #ff5f7e
+      );
+
+      border-radius: 8px;
+
+      box-shadow:
+        0 8px 15px rgba(0, 0, 0, 0.15);
+    }
+
+
+    /* 箱の縦リボン */
+
+    .gift-box::before {
+      content: "";
+
+      position: absolute;
+
+      left: 42%;
+
+      top: 0;
+
+      width: 16%;
+      height: 100%;
+
+      background: #ffd166;
+    }
+
+
+    /* 箱の横リボン */
+
+    .gift-box::after {
+      content: "";
+
+      position: absolute;
+
+      left: 0;
+      top: 35%;
+
+      width: 100%;
+      height: 16%;
+
+      background: #ffd166;
+    }
+
+
+    /* フタ */
+
+    .gift-lid {
+      position: absolute;
+
+      left: 5%;
+      top: 20%;
+
+      width: 90%;
+      height: 25%;
+
+      background: linear-gradient(
+        135deg,
+        #ff9daf,
+        #ff6f89
+      );
+
+      border-radius: 8px;
+
+      z-index: 2;
+
+      box-shadow:
+        0 5px 10px rgba(0, 0, 0, 0.12);
+
+      transition:
+        transform 0.7s cubic-bezier(.68,-0.55,.27,1.55);
+    }
+
+
+    /* フタのリボン */
+
+    .gift-lid::after {
+      content: "";
+
+      position: absolute;
+
+      left: 42%;
+
+      top: 0;
+
+      width: 16%;
+      height: 100%;
+
+      background: #ffd166;
+    }
+
+
+    /* リボン */
+
+    .ribbon-left,
+    .ribbon-right {
+      position: absolute;
+
+      top: 0;
+
+      width: 50px;
+      height: 35px;
+
+      border: 8px solid #ffd166;
+
+      border-radius: 50%;
+    }
+
+    .ribbon-left {
+      left: 30%;
+
+      transform:
+        rotate(-25deg)
+        translateY(-15px);
+    }
+
+    .ribbon-right {
+      right: 30%;
+
+      transform:
+        rotate(25deg)
+        translateY(-15px);
+    }
+
+
+    /* =========================
+       開封アニメーション
+    ========================= */
+
+    .gift.opening .gift-lid {
+      transform:
+        translateY(-70px)
+        rotate(-8deg);
+    }
+
+    .gift.opening {
+      animation: giftShake 0.5s ease;
+    }
+
+    @keyframes giftShake {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      25% {
+        transform: rotate(-4deg);
+      }
+
+      50% {
+        transform: rotate(4deg);
+      }
+
+      75% {
+        transform: rotate(-3deg);
+      }
+
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+
+
+    /* =========================
+       ボタン
+    ========================= */
+
+    .open-button {
+      width: 100%;
+      max-width: 300px;
+
+      min-height: 52px;
+
+      padding: 14px 24px;
+
+      border: none;
+      border-radius: 999px;
+
+      background: linear-gradient(
+        135deg,
+        #ff7b93,
+        #ff5b7c
+      );
+
+      color: white;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 20px rgba(255, 91, 124, 0.25);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .open-button:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 10px 25px rgba(255, 91, 124, 0.35);
+    }
+
+    .open-button:active {
+      transform: translateY(1px);
+    }
+
+
+    /* =========================
+       ローディング画面
+    ========================= */
+
+    .loading {
+      padding: 20px 0;
+    }
+
+    .loading-icon {
+      font-size: 50px;
+
+      margin-bottom: 20px;
+
+      animation: bounce 1s infinite;
+    }
+
+    .loading-text {
+      font-size: 18px;
+
+      color: #666;
+    }
+
+    @keyframes bounce {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-12px);
+      }
+    }
+
+
+    /* =========================
+       結果画面
+    ========================= */
+
+    .result-title {
+      margin-bottom: 10px;
+
+      color: #ff5f7e;
+    }
+
+    .result-message {
+      margin-bottom: 24px;
+    }
+
+
+    /* =========================
+       イラスト
+    ========================= */
+
+    .illustration-wrap {
+      width: 100%;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      margin: 0 auto 28px;
+
+      /*
+        横幅に合わせる
+      */
+      overflow: hidden;
+
+      border-radius: 18px;
+    }
+
+    #illustration {
+      display: block;
+
+      width: auto;
+      max-width: 100%;
+
+      /*
+        通常はカード内に収める
+      */
+      max-height: 65vh;
+
+      object-fit: contain;
+
+      border-radius: 18px;
+
+      box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.12);
+    }
+
+
+    /* =========================
+       ダウンロードボタン
+    ========================= */
+
+    #download {
+      display: block;
+
+      width: 100%;
+      max-width: 300px;
+
+      margin: 0 auto;
+
+      text-decoration: none;
+    }
+
+    #download button {
+      width: 100%;
+
+      min-height: 52px;
+
+      padding: 14px 24px;
+
+      border: none;
+      border-radius: 999px;
+
+      background: linear-gradient(
+        135deg,
+        #8b7cf6,
+        #6d5ce7
+      );
+
+      color: white;
+
+      font-size: 16px;
+      font-weight: bold;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 8px 20px rgba(109, 92, 231, 0.25);
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    #download button:hover {
+      transform: translateY(-2px);
+
+      box-shadow:
+        0 10px 25px rgba(109, 92, 231, 0.35);
+    }
+
+
+    /* =========================
+       キラキラ
+    ========================= */
+
+    .sparkle {
+      position: fixed;
+
+      pointer-events: none;
+
+      font-size: 22px;
+
+      animation:
+        sparkle 1s ease-out forwards;
+
+      z-index: 999;
+    }
+
+    @keyframes sparkle {
+      0% {
+        opacity: 1;
+        transform:
+          translate(0, 0)
+          scale(0.5)
+          rotate(0deg);
+      }
+
+      100% {
+        opacity: 0;
+
+        transform:
+          translate(
+            var(--x),
+            var(--y)
+          )
+          scale(1.4)
+          rotate(180deg);
+      }
+    }
+
+
+    /* =========================
+       フェードイン
+    ========================= */
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+
+        transform:
+          translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+
+        transform:
+          translateY(0);
+      }
+    }
+
+
+    /* =========================
+       小さいスマホ
+    ========================= */
+
+    @media (max-width: 360px) {
+
+      #app {
+        padding-left: 14px;
+        padding-right: 14px;
+        padding-top: 18px;
+        padding-bottom: 18px;
+      }
+
+      .card {
+        padding: 24px 16px;
+
+        border-radius: 22px;
+      }
+
+      h1 {
+        font-size: 23px;
+      }
+
+      .message {
+        font-size: 14px;
+
+        margin-bottom: 20px;
+      }
+
+      .gift-area {
+        margin-bottom: 20px;
+      }
+
+      .open-button,
+      #download button {
+        font-size: 15px;
+      }
+    }
+
+
+    /* =========================
+       画面が縦にかなり小さい場合
+       ※中央表示は維持
+       ※必要ならスクロール
+    ========================= */
+
+    @media (max-height: 600px) {
+
+      #app {
+        /*
+          中央配置を維持しつつ
+          上下に余白を少なくする
+        */
+        padding-top: 12px;
+        padding-bottom: 12px;
+      }
+
+      .card {
+        padding-top: 22px;
+        padding-bottom: 22px;
+      }
+
+      .gift-area {
+        margin-top: 0;
+        margin-bottom: 18px;
+      }
+
+      .message {
+        margin-bottom: 18px;
+      }
+
+      #illustration {
+        max-height: 50vh;
+      }
+    }
+
+
+    /* =========================
+       アニメーションを減らす設定
+    ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+
+        scroll-behavior: auto !important;
+
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
 
 
 <body>
 
-<div id="app">
+  <main id="app">
+
+    <!-- =====================
+         最初の画面
+    ====================== -->
+
+    <section
+      id="welcome"
+      class="screen"
+    >
+
+      <div class="card">
+
+        <h1>
+          🎁 プレゼントが届いています
+        </h1>
+
+        <p class="message">
+          あなたのためのプレゼントです。<br>
+          下の箱を開けてみてください！
+        </p>
 
 
-  <!-- =========================
-       最初の画面
-  ========================= -->
+        <div class="gift-area">
 
-  <section id="welcome" class="screen">
+          <div
+            id="gift"
+            class="gift"
+            role="button"
+            tabindex="0"
+            aria-label="プレゼントを開ける"
+          >
 
-    <div class="card">
+            <div class="ribbon-left"></div>
+            <div class="ribbon-right"></div>
 
-      <div
-        style="
-          font-size:48px;
-          margin-bottom:6px;
-        "
-      >
-        🎁
-      </div>
+            <div class="gift-lid"></div>
 
+            <div class="gift-box"></div>
 
-      <h1>
-        あなたにプレゼントが届いています
-      </h1>
+          </div>
 
-
-      <p>
-        ちょっとだけ特別なものを用意しました。<br>
-        箱をタップして開けてみてね。
-      </p>
+        </div>
 
 
-      <div
-        id="gift"
-        class="gift-wrap"
-        role="button"
-        tabindex="0"
-        aria-label="プレゼントを開ける"
-      >
-
-        <div class="gift-box"></div>
-
-        <div class="gift-lid"></div>
-
-        <div class="ribbon"></div>
-
-      </div>
-
-
-      <button
-        id="openButton"
-        type="button"
-      >
-        プレゼントを開ける
-      </button>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =========================
-       開封中
-  ========================= -->
-
-  <section
-    id="loading"
-    class="screen hidden"
-  >
-
-    <div class="card">
-
-      <div
-        style="
-          font-size:52px;
-        "
-      >
-        ✨
-      </div>
-
-
-      <h1>
-        プレゼントを開封中<span class="dots"></span>
-      </h1>
-
-
-      <p class="loading">
-        大切なものを準備しています
-      </p>
-
-    </div>
-
-  </section>
-
-
-
-  <!-- =========================
-       プレゼント表示
-  ========================= -->
-
-  <section
-    id="result"
-    class="screen hidden"
-  >
-
-    <div class="card">
-
-      <div
-        style="
-          font-size:42px;
-          margin-bottom:6px;
-        "
-      >
-        🎉
-      </div>
-
-
-      <h1>
-        プレゼントが届きました！
-      </h1>
-
-
-      <p class="message">
-        いつもありがとう。<br>
-        よかったら大切にしてね。
-      </p>
-
-
-      <!--
-        ========================================
-        プレゼントする画像
-        ========================================
-
-        GitHubの同じフォルダに
-
-        present.png
-
-        という名前で画像を置いてください。
-      -->
-
-      <img
-        id="illustration"
-        alt="プレゼントのイラスト"
-        src="present.png"
-      >
-
-
-      <!--
-        画像をダウンロードするボタン
-      -->
-
-      <a
-        id="download"
-        href="present.png"
-        download="present.png"
-      >
-
-        <button type="button">
-          イラストを受け取る ↓
+        <button
+          id="openButton"
+          class="open-button"
+          type="button"
+        >
+          🎁 プレゼントを開ける
         </button>
 
-      </a>
-
-
-      <div class="small">
-        画像を保存して楽しんでね。
       </div>
 
-    </div>
-
-  </section>
-
-</div>
+    </section>
 
 
+    <!-- =====================
+         ローディング画面
+    ====================== -->
 
-<script>
+    <section
+      id="loading"
+      class="screen"
+      style="display: none;"
+    >
 
-  const welcome =
-    document.getElementById("welcome");
+      <div class="card">
 
-  const loading =
-    document.getElementById("loading");
+        <div class="loading">
 
-  const result =
-    document.getElementById("result");
+          <div class="loading-icon">
+            🎁
+          </div>
 
-  const gift =
-    document.getElementById("gift");
+          <div class="loading-text">
+            プレゼントを開封中…
+          </div>
 
-  const openButton =
-    document.getElementById("openButton");
+        </div>
 
+      </div>
 
-  /*
-    キラキラ演出
-  */
-
-  function sparkleBurst() {
-
-    const symbols = [
-      "✨",
-      "⭐",
-      "💖",
-      "✦",
-      "🎀"
-    ];
+    </section>
 
 
-    for (
-      let i = 0;
-      i < 22;
-      i++
-    ) {
+    <!-- =====================
+         結果画面
+    ====================== -->
 
-      const el =
-        document.createElement("div");
+    <section
+      id="result"
+      class="screen"
+      style="display: none;"
+    >
 
+      <div class="card">
 
-      el.className =
-        "sparkle";
+        <h1 class="result-title">
+          🎉 プレゼントが届きました！
+        </h1>
 
-
-      el.textContent =
-        symbols[
-          Math.floor(
-            Math.random()
-            * symbols.length
-          )
-        ];
+        <p class="message result-message">
+          受け取ってくれてありがとう！
+        </p>
 
 
-      el.style.left =
-        "50%";
+        <div class="illustration-wrap">
+
+          <img
+            id="illustration"
+            src="present.png"
+            alt="プレゼントのイラスト"
+          >
+
+        </div>
 
 
-      el.style.top =
-        "43%";
+        <a
+          id="download"
+          href="present.png"
+          download="present.png"
+        >
+          <button type="button">
+            🖼️ イラストを受け取る ↓
+          </button>
+        </a>
+
+      </div>
+
+    </section>
+
+  </main>
 
 
-      el.style.setProperty(
-        "--x",
-        `${(Math.random() - .5) * 75}vw`
-      );
+  <script>
+
+    /* =========================
+       要素取得
+    ========================= */
+
+    const gift =
+      document.getElementById("gift");
+
+    const openButton =
+      document.getElementById("openButton");
+
+    const welcome =
+      document.getElementById("welcome");
+
+    const loading =
+      document.getElementById("loading");
+
+    const result =
+      document.getElementById("result");
 
 
-      el.style.setProperty(
-        "--y",
-        `${(Math.random() - .5) * 65}vh`
-      );
+    let opened = false;
 
 
-      document.body.appendChild(el);
+    /* =========================
+       プレゼントを開く
+    ========================= */
+
+    function openGift() {
+
+      if (opened) {
+        return;
+      }
+
+      opened = true;
 
 
-      setTimeout(
-        () => el.remove(),
-        1400
-      );
+      /* 箱を開ける */
+      gift.classList.add("opening");
+
+
+      /* キラキラ */
+      createSparkles();
+
+
+      /*
+        少し待って
+        ローディング画面へ
+      */
+
+      setTimeout(() => {
+
+        welcome.style.display = "none";
+
+        loading.style.display = "block";
+
+        /*
+          スクロール位置を一番上へ
+        */
+        window.scrollTo({
+          top: 0,
+          behavior: "instant"
+        });
+
+      }, 700);
+
+
+      /*
+        開封完了
+      */
+
+      setTimeout(() => {
+
+        loading.style.display = "none";
+
+        result.style.display = "block";
+
+
+        /*
+          結果画面が表示されたら
+          一番上へ
+        */
+
+        window.scrollTo({
+          top: 0,
+          behavior: "instant"
+        });
+
+
+        createSparkles();
+
+      }, 3000);
 
     }
-  }
 
 
-  /*
-    プレゼントを開ける
-  */
+    /* =========================
+       ボタンクリック
+    ========================= */
 
-  function openGift() {
-
-    if (
-      welcome.classList.contains("hidden")
-    ) {
-      return;
-    }
+    openButton.addEventListener(
+      "click",
+      openGift
+    );
 
 
-    gift.classList.add("opening");
+    /* =========================
+       箱クリック
+    ========================= */
 
-    openButton.disabled =
-      true;
+    gift.addEventListener(
+      "click",
+      openGift
+    );
 
 
-    /*
-      箱が開く
-    */
+    /* =========================
+       キーボード操作
+    ========================= */
 
-    setTimeout(
-      () => {
+    gift.addEventListener(
+      "keydown",
+      function(event) {
 
-        welcome.classList.add(
-          "hidden"
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+
+          event.preventDefault();
+
+          openGift();
+
+        }
+
+      }
+    );
+
+
+    /* =========================
+       キラキラ生成
+    ========================= */
+
+    function createSparkles() {
+
+      const symbols = [
+        "✨",
+        "⭐",
+        "💫",
+        "🌟"
+      ];
+
+
+      for (let i = 0; i < 18; i++) {
+
+        const sparkle =
+          document.createElement("div");
+
+        sparkle.className = "sparkle";
+
+        sparkle.textContent =
+          symbols[
+            Math.floor(
+              Math.random() * symbols.length
+            )
+          ];
+
+
+        /*
+          画面中央付近から
+          ランダムに飛ばす
+        */
+
+        const x =
+          (Math.random() - 0.5) * 500;
+
+        const y =
+          (Math.random() - 0.5) * 500;
+
+
+        sparkle.style.left =
+          "50%";
+
+        sparkle.style.top =
+          "40%";
+
+
+        sparkle.style.setProperty(
+          "--x",
+          `${x}px`
         );
 
-        loading.classList.remove(
-          "hidden"
+        sparkle.style.setProperty(
+          "--y",
+          `${y}px`
+        );
+
+
+        document.body.appendChild(
+          sparkle
         );
 
 
         /*
-          画面を一番上へ
+          アニメーション終了後に削除
         */
 
-        window.scrollTo(
-          0,
-          0
-        );
+        setTimeout(() => {
 
+          sparkle.remove();
 
-        sparkleBurst();
-
-      },
-      650
-    );
-
-
-    /*
-      開封中の表示
-      ↓
-      プレゼント表示
-    */
-
-    setTimeout(
-      () => {
-
-        loading.classList.add(
-          "hidden"
-        );
-
-        result.classList.remove(
-          "hidden"
-        );
-
-
-        /*
-          画面を一番上へ
-        */
-
-        window.scrollTo(
-          0,
-          0
-        );
-
-
-        sparkleBurst();
-
-      },
-      2600
-    );
-
-  }
-
-
-  /*
-    ボタンを押したとき
-  */
-
-  openButton.addEventListener(
-    "click",
-    openGift
-  );
-
-
-  /*
-    プレゼント箱をタップしたとき
-  */
-
-  gift.addEventListener(
-    "click",
-    openGift
-  );
-
-
-  /*
-    キーボード操作にも対応
-  */
-
-  gift.addEventListener(
-    "keydown",
-    (e) => {
-
-      if (
-        e.key === "Enter" ||
-        e.key === " "
-      ) {
-
-        e.preventDefault();
-
-        openGift();
+        }, 1100);
 
       }
 
     }
-  );
 
-</script>
+  </script>
 
 </body>
 </html>
